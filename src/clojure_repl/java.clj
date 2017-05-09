@@ -1,15 +1,13 @@
 (ns clojure-repl.java
   "Useful functions for interacting with java classes/objects.
   You can use these functions to explore public API of java classes,
-  especially java-members, java-methods, java-constructors."
+  especially `jmembers`, `jmethods`, `jconstructors`"
   (:require [clojure.string :refer [join lower-case]]))
 
 (defn- subs-after-last-dot [s]
   (let [to-string (str s)]
     (if (= -1 (.indexOf to-string "."))
-      to-string
-      (last (re-find #".*\.([^.]+)" to-string)))))
-
+      to-string (last (re-find #".*\.([^.]+)" to-string))))) 
 (defn- member-type
   "Returns a string description of member type - e.g. 'Field', 'Method', 'Constructor'."
   [member]
@@ -18,7 +16,30 @@
 (defn- normalized-name [member]
   (subs-after-last-dot (:name member)))
 
+
+;;; PUBLIC STUFF
+
+(defn member-as-string
+  "Returns a string descriptions of given java object/class member.
+  For more info see `get-members`."
+  [member]
+  (join
+   " "
+   [(normalized-name member)
+    (:parameter-types member)
+    (when-let [return-type (:return-type member)]
+      (str "-> " (:return-type member)))]))
+
 (defn get-members
+  "Returns a sequence of all (by default) public members of given java object/classs.
+  The structure of items in collection is determined by what the `clojure.reflect/reflect` returns.
+  The items are sorted by name alphabetically.
+  The 1-arity variant will return all public methods.
+  The 2-arity variant will return all methods with given visibility.
+  The 3-arity variant will return all members with type tag from given set of member-types and given visibility (e.g. :public or :private).
+
+  Example: get all public constructors of java class
+    `(get-members java.util.ArrayList :public #{\"constructor\"})`"
   ([object]
    (get-members object :public))
   ([object visibility]
@@ -31,50 +52,42 @@
                                    (lower-case (member-type member))))))
         (sort-by :name))))
 
-(defn get-members-as-strings
-  "Returns the sequence of string description of public methods of given object.
-  Private members can be retrieved by using 2-arity version and passing visibility flag :private.
-  Fields and constructors can be retrieved by using 3-arity version and passing desired
-  member type(s) as a set, e.g. `(get-members-as-strings object :public #{\"constructor\"}`"
-  ([object]
-   (get-members-as-strings object :public))
-  ([object visibility]
-   (get-members-as-strings object visibility #{"method"}))
-  ([object visibility member-types]
-   (->> (get-members object visibility member-types)
-        ;; only interesting data
-        (map (fn [member]
-               (join
-                " "
-                [(normalized-name member)
-                 (:parameter-types member)
-                 (when-let [return-type (:return-type member)]
-                   (str "-> " (:return-type member)))]))))))
+(defn print-members
+  "Generic method for printing members of java object/class.
+  This will will just delegate to the `get-members`
+  and print each member's string represetnation on a new line."
+  [& args]
+  (let [ms (apply get-members args)
+        ms-str (map member-as-string ms)]
+    (doseq [m ms-str]
+      (println m))))
 
-(defn print-java-members [& args]
-  (doseq [m (apply get-members-as-strings args)]
-    (println m)))
 
-(defn java-methods [object]
-  (print-java-members object :public #{"method"}))
+;;; Following functions are the ones that should be used in most cases
+;;; They are simple to use and print important information.
 
-(defn java-constructors
-  "Prints all public constructors of given java object/class."
-  [object]
-  (print-java-members object :public #{"constructor"}))
-
-(defn java-fields
+(defn jfields
   "Prints all public fields of given java object/class."
   [object]
-  (print-java-members object :public #{"field"}))
+  (print-members object :public #{"field"}))
 
-(defn java-members
+(defn jconstructors
+  "Prints all public constructors of given java object/class."
+  [object]
+  (print-members object :public #{"constructor"}))
+
+(defn jmethods
+  "Prints all public methods of given java object/class."
+  [object]
+  (print-members object :public #{"method"}))
+
+(defn jmembers
   "Prints all public members of given java object/class."
   [object]
   (println "\nFields:")
-  (java-fields object)
+  (jfields object)
   (println "\nCtors:")
-  (java-constructors object)
+  (jconstructors object)
   (println "\nMethods:")
-  (java-methods object))
+  (jmethods object))
 
