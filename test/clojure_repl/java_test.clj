@@ -1,0 +1,66 @@
+(ns clojure-repl.java-test
+  (:require [clojure-repl.java :refer :all]
+            [clojure.test :refer :all]))
+
+(deftest list-methods
+  (testing "all non-deprecated public methods shown"
+    (is (=
+         '("after [class java.util.Date] -> boolean"
+           "before [class java.util.Date] -> boolean"
+           "clone [] -> class java.lang.Object"
+           "compareTo [class java.lang.Object] -> int"
+           "compareTo [class java.util.Date] -> int"
+           "equals [class java.lang.Object] -> boolean"
+           "from [class java.time.Instant] -> class java.util.Date"
+           "getClass [] -> class java.lang.Class"
+           "getTime [] -> long"
+           "hashCode [] -> int"
+           "notify [] -> void"
+           "notifyAll [] -> void"
+           "setTime [long] -> void"
+           "toInstant [] -> class java.time.Instant"
+           "toString [] -> class java.lang.String"
+           "wait [long, int] -> void"
+           "wait [long] -> void"
+           "wait [] -> void")
+         (jmethods java.util.Date))))
+
+  (testing "include deprecated methods"
+    (is (=
+         '("DEPRECATED! UTC [int, int, int, int, int, int] -> long"
+           "after [class java.util.Date] -> boolean"
+           "before [class java.util.Date] -> boolean"
+           "clone [] -> class java.lang.Object"
+           "compareTo [class java.lang.Object] -> int"
+           "compareTo [class java.util.Date] -> int"
+           "equals [class java.lang.Object] -> boolean"
+           "from [class java.time.Instant] -> class java.util.Date"
+           "getClass [] -> class java.lang.Class"
+           "DEPRECATED! getDate [] -> int"
+           "DEPRECATED! getDay [] -> int"
+           "DEPRECATED! getHours [] -> int"
+           "DEPRECATED! getMinutes [] -> int"
+           "DEPRECATED! getMonth [] -> int"
+           "DEPRECATED! getSeconds [] -> int"
+           "getTime [] -> long"
+           "DEPRECATED! getTimezoneOffset [] -> int"
+           "DEPRECATED! getYear [] -> int"
+           "hashCode [] -> int"
+           "notify [] -> void"
+           "notifyAll [] -> void"
+           "DEPRECATED! parse [class java.lang.String] -> long"
+           "DEPRECATED! setDate [int] -> void"
+           "DEPRECATED! setHours [int] -> void"
+           "DEPRECATED! setMinutes [int] -> void"
+           "DEPRECATED! setMonth [int] -> void"
+           "DEPRECATED! setSeconds [int] -> void"
+           "setTime [long] -> void"
+           "DEPRECATED! setYear [int] -> void"
+           "DEPRECATED! toGMTString [] -> class java.lang.String"
+           "toInstant [] -> class java.time.Instant"
+           "DEPRECATED! toLocaleString [] -> class java.lang.String"
+           "toString [] -> class java.lang.String"
+           "wait [long, int] -> void"
+           "wait [long] -> void"
+           "wait [] -> void")
+         (jmethods java.util.Date true)))))
