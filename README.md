@@ -23,3 +23,13 @@ Can be used to add a new dependency to classpath dynamically without restarting 
 It's used internaly by [nrepl-refactor](https://github.com/clojure-emacs/refactor-nrepl/blob/a425a8103413fe91f56907857c2043c32b3630a2/src/refactor_nrepl/artifacts.clj#L111).
 
 Can also be used to invoke leiningen tasks programatically: https://github.com/pallet/alembic#invoking-leiningen-tasks
+
+## API
+
+### Java
+
+List all public java methods (including inherited ones) in given java class:
+```clojure
+(require '[clojure-repl.java :as java])
+(java/jmethods java.util.Date)
+```
