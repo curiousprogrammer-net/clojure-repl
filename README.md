@@ -24,6 +24,36 @@ It's used internaly by [nrepl-refactor](https://github.com/clojure-emacs/refacto
 
 Can also be used to invoke leiningen tasks programatically: https://github.com/pallet/alembic#invoking-leiningen-tasks
 
+### JOL (Java Object Layout)
+
+Handy library and command line tool for analyzing java objects' layout and estimating their size.
+Check http://openjdk.java.net/projects/code-tools/jol/.
+
+Check also examples: http://hg.openjdk.java.net/code-tools/jol/file/tip/jol-samples/src/main/java/org/openjdk/jol/samples/
+
+The basic example: http://hg.openjdk.java.net/code-tools/jol/file/018c0e12f70f/jol-samples/src/main/java/org/openjdk/jol/samples/JOLSample_01_Basic.java
+
+```
+(import '(org.openjdk.jol.info ClassLayout))
+(.toPrintable (ClassLayout/parseInstance []))
+;;=>
+clojure.lang.PersistentVector object internals:
+ OFFSET  SIZE                                 TYPE DESCRIPTION                               VALUE
+      0     4                                      (object header)                           21 00 00 00 (00100001 00000000 00000000 00000000) (33)
+      4     4                                      (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)
+      8     4                                      (object header)                           c7 df 00 f8 (11000111 11011111 00000000 11111000) (-134160441)
+     12     4                                  int APersistentVector._hash                   -1
+     16     4                                  int APersistentVector._hasheq                 -2017569654
+     20     4                                  int PersistentVector.cnt                      0
+     24     4                                  int PersistentVector.shift                    5
+     28     4   clojure.lang.PersistentVector.Node PersistentVector.root                     (object)
+     32     4                   java.lang.Object[] PersistentVector.tail                     []
+     36     4          clojure.lang.IPersistentMap PersistentVector._meta                    null
+Instance size: 40 bytes
+Space losses: 0 bytes internal + 0 bytes external = 0 bytes total
+
+```
+
 ## API
 
 ### Java
