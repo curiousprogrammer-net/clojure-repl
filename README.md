@@ -51,8 +51,45 @@ clojure.lang.PersistentVector object internals:
      36     4          clojure.lang.IPersistentMap PersistentVector._meta                    null
 Instance size: 40 bytes
 Space losses: 0 bytes internal + 0 bytes external = 0 bytes total
+```
+
+**Note**: *you may want to clone source repository to get latest version*:
 
 ```
+hg clone http://hg.openjdk.java.net/code-tools/jol/ jol
+cd jol
+mvn clean install
+```
+
+Then update version in project.clj.
+
+
+#### Using GraphLayout
+
+`GraphLayout` is one of more useful classes which can be used for getting total object footprint.
+Check [ObjectFootprint.java source code](http://hg.openjdk.java.net/code-tools/jol/file/018c0e12f70f/jol-cli/src/main/java/org/openjdk/jol/operations/ObjectFootprint.java).
+
+One problem with this class is that `parseInstance` method accepts varargs,
+which means it's harder to use from Clojure.
+You can use it like this:
+
+```
+(import '(org.openjdk.jol.info GraphLayout))
+
+(.toFootprint (GraphLayout/parseInstance (doto (object-array 1) (aset 0 [1 2 3]))))
+;;=>
+clojure.lang.PersistentVector@4999f4e6d footprint:
+     COUNT       AVG       SUM   DESCRIPTION
+         2        88       176   [Ljava.lang.Object;
+         1        40        40   clojure.lang.PersistentVector
+         1        24        24   clojure.lang.PersistentVector$Node
+         3        24        72   java.lang.Long
+         1        16        16   java.util.concurrent.atomic.AtomicReference
+         8                 328   (total)
+```
+
+Check https://stackoverflow.com/questions/11702184/how-to-handle-java-variable-length-arguments-in-clojure
+for more details.
 
 ## API
 
