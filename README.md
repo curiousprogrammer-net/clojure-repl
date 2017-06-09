@@ -25,7 +25,23 @@ Check https://github.com/hugoduncan/criterium#usage.
 Can be used to add a new dependency to classpath dynamically without restarting the REPL.
 It's used internaly by [nrepl-refactor](https://github.com/clojure-emacs/refactor-nrepl/blob/a425a8103413fe91f56907857c2043c32b3630a2/src/refactor_nrepl/artifacts.clj#L111).
 
+You can add dependency like this:
+```
+(require '[alembic.still :as a])
+
+(a/distill '[org.jasypt/jasypt "1.9.2"])
+;;=> Loaded dependencies:
+;;=> [[org.jasypt/jasypt "1.9.2"]]
+;;=> nil
+```
+
 Can also be used to invoke leiningen tasks programatically: https://github.com/pallet/alembic#invoking-leiningen-tasks
+```
+(require '[alembic.still :as a])
+
+(a/lein deps :tree)
+;;=> lots of output...
+```
 
 ### JOL (Java Object Layout)
 
