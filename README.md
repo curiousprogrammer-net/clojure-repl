@@ -4,10 +4,13 @@ Very simple project skeleton for running the REPL and doing experiments.
 
 ## Adding dependency 
 
+Latest version: 
+[![Clojars Project](https://img.shields.io/clojars/v/curiousprogrammer/clojure-repl.svg)](https://clojars.org/curiousprogrammer/clojure-repl)
+
 Add `clojure-repl` as a dependency to your profiles.clj or project.clj.
 Ideally, into the `:repl` profile to not interfere it with other tasks:
 ```
- :repl {:dependencies [[curiousprogrammer/clojure-repl "0.1.0-SNAPSHOT"]]}}
+ :repl {:dependencies [[curiousprogrammer/clojure-repl "x.y.z"]]}}
 ```
 
 ## Libraries
