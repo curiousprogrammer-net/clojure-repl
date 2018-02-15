@@ -3,11 +3,11 @@
   :url "https://github.com/jumarko/clojure-repl"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha16"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha17"]
                  [alembic "0.3.2"]
                  [criterium "0.4.4"]
                  [org.openjdk.jol/jol-core "0.8"]]
   :main ^:skip-aot clojure-repl.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
-             :repl {:dependencies [[org.clojure/clojure "1.9.0-alpha16" :classifier "sources"]]}})
+             :repl {:dependencies [[org.clojure/clojure "1.9.0" :classifier "sources"]]}})
