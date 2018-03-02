@@ -50,3 +50,39 @@
   (concat
    (jconstructors clazz)
    (jmethods clazz)))
+
+(defn inheritance-tree
+  ([clazz]
+   (inheritance-tree clazz #(.getName %)))
+  ([clazz sort-fn]
+   (let [f (fn f [c]
+             (reduce (fn [m p] (assoc m p (f p)))
+                     {}
+                     (sort-by sort-fn (parents c))))]
+     {clazz (f clazz)})))
+
+(defn print-tree [tree]
+  (let [p (fn [c indent]
+            (print (apply str (repeat (* 4 indent) \space)))
+            (println "*" (if (.isInterface c)
+                           (.getName c)
+                           (str \< (.getName c) \>))))
+        f (fn f [t indent]
+            (if (map? t)
+              (doseq [[k v] t]
+                (p k indent)
+                (f v (inc indent)))
+              (p t indent)))]
+    (f tree 0)))
+
+(defn ancestors
+  "Prints all ancestors of given class using a nice inheritance tree visualization.
+  Classes are enclosed with angle brackets."
+  [clazz]
+  (print-tree (inheritance-tree clazz)))
+
+(comment
+
+  (inheritance-tree clojure.lang.PersistentArrayMap)
+
+  (ancestors clojure.lang.PersistentArrayMap))

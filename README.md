@@ -9,6 +9,7 @@ Latest stable version:
 
 Add `clojure-repl` as a dependency to your profiles.clj or project.clj.
 Ideally, into the `:repl` profile to not interfere it with other tasks:
+
 ```
  :repl {:dependencies [[curiousprogrammer/clojure-repl "x.y.z"]]}}
 ```
@@ -26,6 +27,7 @@ Can be used to add a new dependency to classpath dynamically without restarting 
 It's used internaly by [nrepl-refactor](https://github.com/clojure-emacs/refactor-nrepl/blob/a425a8103413fe91f56907857c2043c32b3630a2/src/refactor_nrepl/artifacts.clj#L111).
 
 You can add dependency like this:
+
 ```
 (require '[alembic.still :as a])
 
@@ -36,6 +38,7 @@ You can add dependency like this:
 ```
 
 Can also be used to invoke leiningen tasks programatically: https://github.com/pallet/alembic#invoking-leiningen-tasks
+
 ```
 (require '[alembic.still :as a])
 
@@ -115,7 +118,46 @@ for more details.
 ### Java
 
 List all public java methods (including inherited ones) in given java class:
+
 ```clojure
-(require '[clojure-repl.java :as java])
-(java/jmethods java.util.Date)
+(require '[clojure-repl.java :as j])
+(j/jmethods java.util.Date)
 ```
+
+Show inheritance tree:
+
+```
+(require '[clojure-repl.java :as j])
+
+(j/ancestors clojure.lang.PersistentArrayMap)
+* <clojure.lang.PersistentArrayMap>
+    * <clojure.lang.APersistentMap>
+        * <clojure.lang.AFn>
+            * clojure.lang.IFn
+                * java.lang.Runnable
+                * java.util.concurrent.Callable
+            * <java.lang.Object>
+        * clojure.lang.IHashEq
+        * clojure.lang.IPersistentMap
+            * clojure.lang.Associative
+                * clojure.lang.ILookup
+                * clojure.lang.IPersistentCollection
+                    * clojure.lang.Seqable
+            * clojure.lang.Counted
+            * java.lang.Iterable
+        * clojure.lang.MapEquivalence
+        * java.io.Serializable
+        * java.lang.Iterable
+        * java.util.Map
+    * clojure.lang.IEditableCollection
+    * clojure.lang.IKVReduce
+    * clojure.lang.IMapIterable
+    * clojure.lang.IObj
+        * clojure.lang.IMeta
+
+;; or use more verbose
+(j/print-tree (j/inheritance-tree clojure.lang.PersistentArrayMap))
+
+```
+
+Note: the implementation code for inheritance trees was adapted from Stuart Sierra's talk [Learning Clojure: Next Steps](https://www.youtube.com/watch?v=pbodL96HM28).
