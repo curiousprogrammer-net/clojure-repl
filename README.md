@@ -46,7 +46,33 @@ Can also be used to invoke leiningen tasks programatically: https://github.com/p
 ;;=> lots of output...
 ```
 
-### JOL (Java Object Layout)
+### clj-memory-meter
+
+[clj-memory-meter** is a nice tool for measuring the memory occupied by some Java/Clojure object.
+
+Use it:
+
+```
+(require '[clj-memory-meter.core :as mm])
+(mm/measure [1 2 3 4 5])
+nil
+384 B
+```
+
+**Info**:
+
+* [clj-memory meter – measure the memory used by arbitrary objects](https://groups.google.com/forum/#!topic/clojure/MIdLIvo07Vw)
+* http://clojure-goes-fast.com/blog/introspection-tool-object-memory-meter/
+  *  It wraps JAMM, on top of which it provides the ability to load the JVM agent at runtime (so you don't need to start the program with -javaagent parameter) 
+  * measure is the only function you would use. It walks the object and its components, calculates the total memory occupancy, and returns a human-readable result. You can call it on any Java or Clojure object
+  * You can provide :shallow true as a parameter to do only a shallow analysis of the object's memory usage. It counts the object header plus the space for object fields, without following the references.
+  * You can pass :debug true to measure to print the object layout tree with sizes for each part. Or you can pass :debug <number> to limit the nesting level being printed:
+* https://github.com/clojure-goes-fast/clj-memory-meter
+  * This library is a thin wrapper around Java Agent for Memory Managements. It allows to inspect at runtime how much memory an object occupies together with all its child fields.
+  * uses https://github.com/jbellis/jamm
+
+
+### JOL (Java Object Layout) - UPDATE: prefer clj-memory-meter
 
 Handy library and command line tool for analyzing java objects' layout and estimating their size.
 Check http://openjdk.java.net/projects/code-tools/jol/.
