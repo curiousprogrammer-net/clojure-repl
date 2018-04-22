@@ -84,8 +84,7 @@
                                   clazz-or-instance
                                   (class clazz-or-instance)))))
 
-(comment
-
+(comment 
   (inheritance-tree clojure.lang.PersistentArrayMap)
 
   (ancestors clojure.lang.PersistentArrayMap)
