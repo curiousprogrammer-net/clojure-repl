@@ -76,13 +76,17 @@
     (f tree 0)))
 
 (defn ancestors
-  "Prints all ancestors of given class using a nice inheritance tree visualization.
+  "Prints all ancestors of given class or instance (calling `class` automatically)
+  using a nice inheritance tree visualization.
   Classes are enclosed with angle brackets."
-  [clazz]
-  (print-tree (inheritance-tree clazz)))
+  [clazz-or-instance]
+  (print-tree (inheritance-tree (if (class? clazz-or-instance)
+                                  clazz-or-instance
+                                  (class clazz-or-instance)))))
 
 (comment
 
   (inheritance-tree clojure.lang.PersistentArrayMap)
 
-  (ancestors clojure.lang.PersistentArrayMap))
+  (ancestors clojure.lang.PersistentArrayMap)
+  (ancestors []))
