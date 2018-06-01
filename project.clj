@@ -1,4 +1,4 @@
-(defproject curiousprogrammer/clojure-repl "0.2.3"
+(defproject curiousprogrammer/clojure-repl "0.2.4-SNAPSHOT"
   :description "Sample project with a few useful dependencies used just to run `lein repl` and do clojure experiments."
   :url "https://github.com/jumarko/clojure-repl"
   :license {:name "Eclipse Public License"
